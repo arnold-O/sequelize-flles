@@ -111,7 +111,7 @@ router.post("/user", function (req, res) {
       }
     })
       res.status(200).json({
-        updateValue
+       message:"data successfuly updated"
       })
 
   })

@@ -1,6 +1,6 @@
 const express = require("express");
 const Sequelize = require("sequelize");
-const AllRoutes = require('./route')
+const AllRoutes = require("./route");
 
 const app = express();
 app.use(express.json());
@@ -20,11 +20,8 @@ sequelize
     console.log(err);
   });
 
-
-
 // routes handler
-app.use('/', AllRoutes)
-
+app.use("/", AllRoutes);
 
 const PORT = 5000;
 
