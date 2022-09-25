@@ -96,7 +96,7 @@ app.post("/post", async (req, res) => {
   }
 });
 
-app.post("/login", verifyToken,  async (req, res) => {
+app.post("/login", verifyToken, async (req, res) => {
   try {
     const { email, password } = req.body;
     if (!email && !password) {
@@ -124,26 +124,21 @@ app.post("/login", verifyToken,  async (req, res) => {
           expiresIn,
         }
       );
-     return res.status(200).json({
+      return res.status(200).json({
         msg: `welcome, ${loginUser.name}`,
         userTOken,
       });
-      
-    }else{
+    } else {
       res.status(200).json({
         msg: "please check your credetials again",
-       
       });
-      
-
     }
   } catch (error) {
     res.status(404).json({
-      error
+      error,
     });
   }
 });
-
 
 const PORT = 5000;
 

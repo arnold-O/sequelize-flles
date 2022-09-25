@@ -1,5 +1,4 @@
-module.exports =  {
-    secret:'useronlinekicks',
-    expiresIn:600000
-
-}
+module.exports = {
+  secret: "useronlinekicks",
+  expiresIn: 600000,
+};

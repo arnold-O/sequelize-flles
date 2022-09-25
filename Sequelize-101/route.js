@@ -74,31 +74,23 @@ router.post("/user", function (req, res) {
 });
 
 router.get("/all-users", async (req, res) => {
- try {
-  const getAllUsers = await User.findAll({
-    where: {
-      
-    },
-    
-  });
-  const UserInfo = getAllUsers.map((data) => {
+  try {
+    const getAllUsers = await User.findAll({
+      where: {},
+    });
+    const UserInfo = getAllUsers.map((data) => {
       return { name: data.name, email: data.email };
     });
-  
+
     res.status(200).json({
       message: "success",
       UserInfo,
     });
-  
- } catch (error) {
-  
-  res.status(500).json({
-    data:error
-  })
-  
- }
-
-  
+  } catch (error) {
+    res.status(500).json({
+      data: error,
+    });
+  }
 });
 
 router.put("/user/:id", async (req, res) => {
@@ -134,15 +126,14 @@ router.delete("/user/:id", async (req, res) => {
   });
 });
 
-
-router.get('/raw-query', async(req, res)=>{
-  const rawQuery = await sequelize.query('select * from users',{
-    type:sequelize.QueryTypes.SELECT
-  })
+router.get("/raw-query", async (req, res) => {
+  const rawQuery = await sequelize.query("select * from users", {
+    type: sequelize.QueryTypes.SELECT,
+  });
 
   res.status(200).json({
-    rawQuery
-  })
-})
+    rawQuery,
+  });
+});
 
 module.exports = router;
