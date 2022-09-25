@@ -1,7 +1,8 @@
 const express = require("express");
 const Sequelize = require("sequelize");
 const bcrypt = require("bcrypt");
-const jwt = require('jsonwebtoken')
+const jwt = require('jsonwebtoken');
+const { secret, expiresIn } = require("./config/jwt.config");
 
 const app = express();
 app.use(express.json());
@@ -113,8 +114,8 @@ app.post("/login", async (req, res) => {
       });
     }
     if (bcrypt.compareSync(password, loginUser.password)) {
-      let userTOken = jwt.sign({name:loginUser.name, id:loginUser.id}, 'useronlinekicks', {
-        expiresIn:600000
+      let userTOken = jwt.sign({name:loginUser.name, id:loginUser.id}, secret, {
+        expiresIn
       })
       res.status(200).json({
         msg: `welcome, ${loginUser.name}`,
