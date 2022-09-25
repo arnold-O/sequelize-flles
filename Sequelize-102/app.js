@@ -3,6 +3,7 @@ const Sequelize = require("sequelize");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { secret, expiresIn } = require("./config/jwt.config");
+const verifyToken = require("./config/jwt.middleware");
 
 const app = express();
 app.use(express.json());
@@ -95,7 +96,7 @@ app.post("/post", async (req, res) => {
   }
 });
 
-app.post("/login", async (req, res) => {
+app.post("/login", verifyToken,  async (req, res) => {
   try {
     const { email, password } = req.body;
     if (!email && !password) {
@@ -110,7 +111,7 @@ app.post("/login", async (req, res) => {
       },
     });
     if (!loginUser) {
-      return res.status(404).json({
+      return res.status(500).json({
         message: "no user with this credentials",
       });
     }
@@ -142,23 +143,7 @@ app.post("/login", async (req, res) => {
     });
   }
 });
-app.post("/validate", (req, res) => {
-  try {
-    let userToken = req.headers["authorization"];
 
-    if (userToken) {
-      const userData = jwt.verify(userToken, secret);
-      return res.status(200).json({
-        data: userData,
-      });
-    }
-  } catch (error) {
-    res.status(404).json({
-      msg: "invalid user or something joor",
-      error,
-    });
-  }
-});
 
 const PORT = 5000;
 
