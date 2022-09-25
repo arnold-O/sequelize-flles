@@ -1,7 +1,7 @@
 const express = require("express");
 const Sequelize = require("sequelize");
 const bcrypt = require("bcrypt");
-const jwt = require('jsonwebtoken');
+const jwt = require("jsonwebtoken");
 const { secret, expiresIn } = require("./config/jwt.config");
 
 const app = express();
@@ -53,13 +53,15 @@ const User = sequelize.define(
   }
 );
 
+// sync modelsssssss
+
 sequelize.sync();
 
 // routes handler
 
 app.post("/post", async (req, res) => {
   try {
-    const { name, email, password} = req.body;
+    const { name, email, password } = req.body;
 
     if (!name || !email || !password) {
       return res.json({
@@ -82,7 +84,6 @@ app.post("/post", async (req, res) => {
       name,
       email,
       password: bcrypt.hashSync(password, 10),
-     
     });
     res.status(200).json({
       newUser,
@@ -113,19 +114,48 @@ app.post("/login", async (req, res) => {
         message: "no user with this credentials",
       });
     }
+
     if (bcrypt.compareSync(password, loginUser.password)) {
-      let userTOken = jwt.sign({name:loginUser.name, id:loginUser.id}, secret, {
-        expiresIn
-      })
-      res.status(200).json({
+      let userTOken = jwt.sign(
+        { name: loginUser.name, id: loginUser.id },
+        secret,
+        {
+          expiresIn,
+        }
+      );
+     return res.status(200).json({
         msg: `welcome, ${loginUser.name}`,
-        userTOken
+        userTOken,
       });
+      
+    }else{
+      res.status(200).json({
+        msg: "please check your credetials again",
+       
+      });
+      
+
     }
-    2;
   } catch (error) {
     res.status(404).json({
-      msg: error,
+      error
+    });
+  }
+});
+app.post("/validate", (req, res) => {
+  try {
+    let userToken = req.headers["authorization"];
+
+    if (userToken) {
+      const userData = jwt.verify(userToken, secret);
+      return res.status(200).json({
+        data: userData,
+      });
+    }
+  } catch (error) {
+    res.status(404).json({
+      msg: "invalid user or something joor",
+      error,
     });
   }
 });
