@@ -1,6 +1,7 @@
 const express = require("express");
 const Sequelize = require("sequelize");
 const bcrypt = require("bcrypt");
+const jwt = require('jsonwebtoken')
 
 const app = express();
 app.use(express.json());
@@ -56,25 +57,31 @@ sequelize.sync();
 // routes handler
 
 app.post("/post", async (req, res) => {
-  const { name, email, status } = req.body;
-  const emailAlrrreadyExist = User.findOne({
-    where: {
-      email,
-    },
-  });
-  if (emailAlrrreadyExist) {
-    return res.status(404).json({
-      message: "Email already exist",
-    });
-  }
-
-  let password = bcrypt.hashSync(req.body.password, 10);
   try {
+    const { name, email, password} = req.body;
+
+    if (!name || !email || !password) {
+      return res.json({
+        msg: "please provide name, email and password",
+      });
+    }
+
+    const emailAlrrreadyExist = await User.findOne({
+      where: {
+        email,
+      },
+    });
+    if (emailAlrrreadyExist) {
+      return res.status(404).json({
+        message: "Email already exist",
+      });
+    }
+
     const newUser = await User.create({
       name,
       email,
-      password: password,
-      status,
+      password: bcrypt.hashSync(password, 10),
+     
     });
     res.status(200).json({
       newUser,
@@ -89,6 +96,11 @@ app.post("/post", async (req, res) => {
 app.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
+    if (!email && !password) {
+      return res.status(400).json({
+        message: "please provide the name or password",
+      });
+    }
 
     const loginUser = await User.findOne({
       where: {
@@ -100,14 +112,20 @@ app.post("/login", async (req, res) => {
         message: "no user with this credentials",
       });
     }
-    if(bcrypt.compareSync(password, loginUser.password)){
-      res.status(200).json({
-        msg:"welcome, ${loginUser.email}"
+    if (bcrypt.compareSync(password, loginUser.password)) {
+      let userTOken = jwt.sign({name:loginUser.name, id:loginUser.id}, 'useronlinekicks', {
+        expiresIn:600000
       })
-
+      res.status(200).json({
+        msg: `welcome, ${loginUser.name}`,
+        userTOken
+      });
     }
+    2;
   } catch (error) {
-    console.log(error)
+    res.status(404).json({
+      msg: error,
+    });
   }
 });
 
