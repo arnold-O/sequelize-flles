@@ -16,5 +16,5 @@ app.get('/', (req, res)=>{
 })
 
 app.listen(PORT, ()=>{
-    console.log(first)
+    console.log(`we runing on port ${PORT}`)
 })
