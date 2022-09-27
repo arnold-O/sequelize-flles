@@ -18,7 +18,8 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       status:{
-        type:Sequelize.ENUM('ACTIVE', 'INACTIVE')
+        type:Sequelize.ENUM('ACTIVE', 'INACTIVE'),
+        default:"INACTIVE"
       }
      
     });
