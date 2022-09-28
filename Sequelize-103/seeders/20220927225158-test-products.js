@@ -11,12 +11,30 @@ module.exports = {
      *   isBetaMember: false
      * }], {});
     */
-     await queryInterface.bulkInsert('Products', [{
-       name: 'John Doe',
-       des: 'this is a sample description',
-       amount:20,
+     await queryInterface.bulkInsert('Products', [
+      {
+       name: 'Joshua Doe',
+       des: 'this is a sample description 1',
+       amount:181,
        status:"ACTIVE"
-      }], {});
+      },
+    
+      {
+       name: 'Jane Doe',
+       des: 'this is a sample description 2',
+       amount:78,
+       status:"ACTIVE"
+      },
+    
+      {
+       name: 'Great Doe',
+       des: 'this is a sample description number 3',
+       amount:2350,
+       status:"INACTIVE"
+      },
+    
+    
+    ], {});
   },
 
   async down (queryInterface, Sequelize) {
