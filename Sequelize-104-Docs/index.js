@@ -39,29 +39,3 @@ const sequelize = new Sequelize('sequelize_docs', 'root', '', {
 
 
 
-// (async()=>{
-//     await sequelize.sync();
-// console.log("All models were synchronized successfully.");
-   
-// })()
-
-// const SaveData = async()=>{
-//   try {
-//     await User.create({
-//         firstName:"test Two",
-//         lastName:"lastName fire"
-
-//     })
-//   } catch (error) {
-//     console.error('Unable to save data');
-//   }
-// }
-
-
-// SaveData()
-
-
-
-
-
-
