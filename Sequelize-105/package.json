@@ -21,6 +21,8 @@
     "nodemon": "^2.0.20"
   },
   "dependencies": {
+    "pg": "^8.8.0",
+    "sequelize": "^6.25.2",
     "sequelize-cli": "^6.5.1"
   }
 }
