@@ -1,16 +1,23 @@
 const express = require("express");
 const bcrypt = require("bcrypt");
 const models = require("./models");
-const jwt= require('jsonwebtoken');
+const jwt = require("jsonwebtoken");
 
 const app = express();
 const PORT = 3000;
 
-app.use(express.json());
-const createToken = (data)=>{
+app.use('/uploads', express.static('uploads'))
 
-    return jwt.sign({data}, "this-is-the-secret", {expiresIn:'5d'})
-}
+app.use(express.json());
+
+const createToken = (data) => {
+  return jwt.sign({ data }, "this-is-the-secret", { expiresIn: "5d" });
+};
+const correctpassword = async function (enteredPassword, userPassword) {
+  return await bcrypt.compare(enteredPassword, userPassword);
+};
+
+
 
 app.post("/register", async (req, res, next) => {
   const { name, email, password } = req.body;
@@ -33,75 +40,67 @@ app.post("/register", async (req, res, next) => {
     password: bcrypt.hashSync(password, 10),
   });
 
-  const token = createToken(doc.id)
+  const token = createToken(doc.id);
 
   res.status(201).json({
     data: doc,
-    token
+    token,
   });
 });
 
-// const protect = async (req, res, next) => {
-//     let token;
-//     if (
-//       req.headers.authorization &&
-//       req.headers.authorization.startsWith("Bearer")
-//     ) {
-//       token = req.headers.authorization.split(" ")[1];
-//     }
-   
-  
-//     if (!token) {
-//       return res.status(404).json({
-//         status:"fail",
-//         message:"please login again"
-//       });
-//     }
-//     const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
-  
-//     const currentUser = await User.findById(decoded.id);
-  
-//     if (!currentUser) {
-//       return next(
-//         new AppError("The User belonging to this token do not  exist", 401)
-//       );
-//     }
-  
-//     if (currentUser.changedPasswordAfter(decoded.iat)) {
-//       return next(new AppError("Please login Again", 401));
-//     }
-  
-//     req.user = currentUser;
-//     next();
-//   });
-  
-
-app.post('/login', (req, res)=>{
-    const { email, password } = req.body;
-
-    if (!email || !password) {
-        return   res.status(404).json({
-            status: "fail",
-            message: "please provide Email and Password",
-          });
-      }
 
 
-      const user = models.User.findOne({
-        where:{email}
-      })
+app.post("/login", async (req, res) => {
+  const { email, password } = req.body;
 
-      if(!user){
-        return   res.status(404).json({
-            status: "fail",
-            message: "pno user with the above credentials",
-          });
+  if (!email || !password) {
+    return res.status(404).json({
+      status: "fail",
+      message: "please provide Email and Password",
+    });
+  }
 
-      }
+  const user = await models.User.findOne({
+    where: { email },
+  });
 
+  if (!user) {
+    return res.status(404).json({
+      status: "fail",
+      message: "No User with the above credentials",
+    });
+  }
 
-})
+  const passwordCheck = await correctpassword(password, user.password);
+
+  if (!passwordCheck) {
+    return res.status(404).json({
+      status: "fail",
+      message: "invalid credentials",
+    });
+  }
+
+  const token = createToken(user.id);
+
+  res.status(201).json({
+    data: user,
+    token,
+  });
+});
 
 app.listen(PORT, () => {
   console.log(`app listening on port ${PORT}`);
 });
+
+app.get('/', async (req, res, next)=>{
+
+    const allUser = await models.User.findAll({})
+
+    return res.status(200).json({
+        allUser
+    })
+
+})
+
+
+app.post('create')
