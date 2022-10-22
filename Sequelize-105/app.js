@@ -2,22 +2,20 @@ const express = require("express");
 const bcrypt = require("bcrypt");
 const models = require("./models");
 const jwt = require("jsonwebtoken");
+const { promisify } = require("util");
 
 const app = express();
-const PORT = 3000;
 
-app.use('/uploads', express.static('uploads'))
+const PORT = 3000;
 
 app.use(express.json());
 
-const createToken = (data) => {
-  return jwt.sign({ data }, "this-is-the-secret", { expiresIn: "5d" });
+const createToken = (id) => {
+  return jwt.sign({ id }, "this-is-the-secret", { expiresIn: "5d" });
 };
 const correctpassword = async function (enteredPassword, userPassword) {
   return await bcrypt.compare(enteredPassword, userPassword);
 };
-
-
 
 app.post("/register", async (req, res, next) => {
   const { name, email, password } = req.body;
@@ -47,8 +45,6 @@ app.post("/register", async (req, res, next) => {
     token,
   });
 });
-
-
 
 app.post("/login", async (req, res) => {
   const { email, password } = req.body;
@@ -92,15 +88,58 @@ app.listen(PORT, () => {
   console.log(`app listening on port ${PORT}`);
 });
 
-app.get('/', async (req, res, next)=>{
+app.get("/", async (req, res, next) => {
+  const allUser = await models.User.findAll({});
 
-    const allUser = await models.User.findAll({})
+  return res.status(200).json({
+    allUser,
+  });
+});
 
-    return res.status(200).json({
-        allUser
-    })
+const protect = async (req, res, next) => {
+  let token;
+  if (
+    req.headers.authorization &&
+    req.headers.authorization.startsWith("Bearer")
+  ) {
+    token = req.headers.authorization.split(" ")[1];
+  }
 
-})
+  if (!token) {
+    return res.status(400).json({
+      status: "fail",
+      message: "please login again ",
+    });
+  }
+  const decoded = await promisify(jwt.verify)(token, "this-is-the-secret");
 
+  const currentUser = await models.User.findOne({ where: { id: decoded.id } });
 
-app.post('create')
+  if (!currentUser) {
+    return res.status(400).json({
+      status: "fail",
+      message: "please login again ",
+    });
+  }
+  req.user = currentUser;
+  next();
+};
+
+const restrictTo = (...roles) => {
+  return (req, res, next) => {
+    if (!roles.includes(req.user.role)) {
+      return res.status(400).json({
+        status: "fail",
+        message: "you do not have permission",
+      });
+    }
+
+    next();
+  };
+};
+
+app.post("/createproduct", protect, restrictTo("user"), (req, res) => {
+  res.json({
+    msg: "ok",
+  });
+});
