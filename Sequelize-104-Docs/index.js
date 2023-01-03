@@ -38,4 +38,4 @@ const sequelize = new Sequelize('sequelize_docs', 'root', '', {
 
 
 
-
+ 

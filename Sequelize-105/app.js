@@ -6,7 +6,7 @@ const { promisify } = require("util");
 
 const app = express();
 
-const PORT = 3000;
+const PORT = 5000;
 
 app.use(express.json());
 
@@ -16,6 +16,10 @@ const createToken = (id) => {
 const correctpassword = async function (enteredPassword, userPassword) {
   return await bcrypt.compare(enteredPassword, userPassword);
 };
+
+// @desc     Register User
+// @route   /api/v1/auth/register
+// @access   Public
 
 app.post("/register", async (req, res, next) => {
   const { name, email, password } = req.body;
@@ -45,6 +49,11 @@ app.post("/register", async (req, res, next) => {
     token,
   });
 });
+
+
+// @desc     Login User
+// @route   /api/v1/auth/login
+// @access   Public 
 
 app.post("/login", async (req, res) => {
   const { email, password } = req.body;

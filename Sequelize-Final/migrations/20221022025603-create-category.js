@@ -12,10 +12,7 @@ module.exports = {
       name: {
         type: Sequelize.STRING,
         allowNull:false
-      },
-      status: {
-        type: Sequelize.INTEGER
-      },
+      },   
       cateImage: {
         type: Sequelize.STRING
       },
