@@ -1,6 +1,6 @@
 'use strict';
 const {
-  Model
+  Model, ENUM
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Product extends Model {
@@ -16,7 +16,8 @@ module.exports = (sequelize, DataTypes) => {
   Product.init({
     name: DataTypes.STRING,
     description: DataTypes.STRING,
-    amount: DataTypes.INTEGER
+    amount: DataTypes.INTEGER,
+    status:ENUM("active", "inactive")
   }, {
     sequelize,
     modelName: 'Product',
