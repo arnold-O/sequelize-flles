@@ -1,54 +1,36 @@
 'use strict';
 
+const { faker } = require('@faker-js/faker');
+
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up (queryInterface, Sequelize) {
-    /**
-     * Add seed commands here.
-     *
-     * Example:
-     * await queryInterface.bulkInsert('People', [{
-     *   name: 'John Doe',
-     *   isBetaMember: false
-     * }], {});
-     * */
-      await queryInterface.bulkInsert('Categories', [
-        {
-        name: 'category 1',
-        categoryImage: 'example.jpg',
-        status:1
-      },
-        {
-        name: 'category 2',
-        categoryImage: 'dummy.png',
-        status:1
-      },
-        {
-        name: 'category 3',
-        categoryImage:' dummy.png',
-        status:0
-      },
-        {
-        name: 'category 4',
-        categoryImage:' clear.png',
-        status:1
-      },
-        {
-        name: 'category 5',
-        categoryImage:' rate.png',
-        status:1
-      },
-    ], {});
+    const item =  categoryFaker(10)
+      await queryInterface.bulkInsert('Categories', item, {});
     
   },
 
   async down (queryInterface, Sequelize) {
-    /**
-     * Add commands to revert seed here.
-     *
-     * Example:
-     * await queryInterface.bulkDelete('People', null, {});
-    */
+   
+ 
     await queryInterface.bulkDelete('Categories', null, {});
   }
 };
+
+
+function categoryFaker(count){
+
+  const data = []
+
+  for (let i = 0; i < count; i++) {
+    const item = {
+      name:  faker.commerce.department(),
+      categoryImage:faker.image.image(),
+      status: faker.helpers.arrayElement([1, 0]),
+      
+    };
+    data.push(item)
+  }
+  return data
+
+}
