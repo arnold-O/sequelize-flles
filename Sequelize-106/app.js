@@ -1,28 +1,16 @@
 const express = require('express')
+const ProductRoutes = require('./routes/productRoutes')
 
 
 
 const app = express()
 
-
-
-
 // routes
-
-app.get('/',(req, res)=>{
-
-
-
-    res.status(200).json({
-        status:"sucess",
-        message:"we are live"
-    })
-
-})
+app.use('/api/v1', ProductRoutes)
 
 
 
-
+  
 
 const PORT = 4500
 app.listen(PORT, ()=>{

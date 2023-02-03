@@ -1,13 +1,12 @@
-const express = require('express')
+const express = require("express");
 
-const router = express.Router()
+const router = express.Router();
 
+router.get("/products", (req, res) => {
+  res.status(200).json({
+    status: "sucess",
+    message: "we are live",
+  });
+});
 
-
-
-
-router.get('/products', (req, res)=>{
-
-    
-
-})
+module.exports = router;

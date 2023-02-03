@@ -16,7 +16,6 @@ module.exports = {
   }
 };
 
-
 function categoryFaker(count){
   const data = []
 
