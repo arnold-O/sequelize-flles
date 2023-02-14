@@ -1,7 +1,6 @@
 const express = require("express");
 const StudentModel = require("../models").Student;
 const bcrypt = require("bcrypt");
-
 const { Op } = require("sequelize");
 const AppError = require("../utils/appError");
 const catchAsyncErrors = require("../utils/catchAsyncErrors");

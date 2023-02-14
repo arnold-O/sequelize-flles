@@ -19,12 +19,19 @@ exports.protect = async (req, res, next) => {
 
   if (!token) {
     return next(new AppError("Not authorized to access this route", 401));
-  } else {
-    const decodedData = jwt.verify(token, process.env.JWT_SECRET);
+  }
+ try {
+  const decodedData = jwt.verify(token, process.env.JWT_SECRET);
 
   
     const  userDetails  = await StudentModel.findOne({ where: { id: decodedData.id } });
    req.user = userDetails.id
     next();
-  }
+  
+ } catch (error) {
+  return next(new AppError("Not authorized to access this route", 401));
+  
+ }
+    
+  
 };
