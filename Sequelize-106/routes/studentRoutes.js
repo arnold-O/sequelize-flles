@@ -6,6 +6,8 @@ const { Op } = require("sequelize");
 const AppError = require("../utils/appError");
 const catchAsyncErrors = require("../utils/catchAsyncErrors");
 const jwtToken = require("../utils/jwt");
+const validateToken = require("../utils/jwtValidate.js");
+const { protect } = require("../utils/jwtValidate.js");
 
 const router = express.Router();
 
@@ -75,7 +77,13 @@ router.post(
   })
 );
 
-router.post('/profile', (req, res, next)=>{
-    
+router.post('/profile', protect, (req, res, next)=>{
+
+    res.status(200).json({
+        data:req.user
+    })
+
+
+
 })
 module.exports = router;
