@@ -76,13 +76,14 @@ router.post(
   })
 );
 
-router.post('/profile', protect, (req, res, next)=>{
+router.post('/profile', protect,  async (req, res, next)=>{
+
+    const StudentLoggedIn  =await  StudentModel.findByPk(req.user);
 
     res.status(200).json({
-        data:req.user
+        status:"success",
+        StudentLoggedIn
     })
-
-
 
 })
 module.exports = router;

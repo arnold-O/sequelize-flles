@@ -29,7 +29,7 @@ exports.protect = async (req, res, next) => {
     next();
   
  } catch (error) {
-  return next(new AppError("Not authorized to access this route", 401));
+  return next(new AppError("Invalid Token please do better", 401));
   
  }
     
