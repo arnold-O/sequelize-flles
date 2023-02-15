@@ -3,6 +3,7 @@ const globalErrorHandler = require("./middleware/errorHandler");
 const ProductRoutes = require("./routes/productRoutes");
 const studentRouter = require("./routes/studentRoutes");
 const UserRouter = require("./routes/userRoutes");
+const EmailRouter = require("./routes/emailRoutes");
 const AppError = require("./utils/appError");
 
 const app = express();
@@ -13,6 +14,7 @@ app.use(express.json());
 app.use("/api/v1", ProductRoutes);
 app.use("/api/v1", studentRouter);
 app.use("/api/v1", UserRouter);
+app.use("/api/v1", EmailRouter);
 
 
 

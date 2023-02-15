@@ -16,7 +16,8 @@ module.exports = (sequelize, DataTypes) => {
   }
   User.init({
     name: DataTypes.STRING,
-    phone_number: DataTypes.STRING
+    phone_number: DataTypes.STRING,
+    user_plan: DataTypes.ENUM('planA', 'planB'),
   }, {
     sequelize,
     modelName: 'User',

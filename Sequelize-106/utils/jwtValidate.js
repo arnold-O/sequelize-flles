@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken");
 const AppError = require("./appError");
 const catchAsyncErrors = require("./catchAsyncErrors");
-const StudentModel = require("../models").Student;
+const User = require("../models").User;
 
 exports.protect = async (req, res, next) => {
   let token;
@@ -15,16 +15,17 @@ exports.protect = async (req, res, next) => {
   }else{
     return next(new AppError("Please provide authorization headers", 401));
   }
-  
+
   if (!token) {
     return next(new AppError("Not authorized to access this route", 401));
   }
  try {
   const decodedData = jwt.verify(token, process.env.JWT_SECRET);
-
   
-    const  userDetails  = await StudentModel.findOne({ where: { id: decodedData.id } });
-   req.user = userDetails.id
+  
+  const  userDetails  = await User.findByPk(decodedData.id);
+  
+   req.user = userDetails
     next();
   
  } catch (error) {
