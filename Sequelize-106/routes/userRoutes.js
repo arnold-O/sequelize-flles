@@ -82,10 +82,7 @@ router.get("/user", async(req, res) => {
  
 });
 router.get("/plansb-offers", protect, authorize('planB'), async(req, res) => {
-
-
-   
-    
+  
         return res.status(200).json({
             status: "sucess",
             message:"!!!"
