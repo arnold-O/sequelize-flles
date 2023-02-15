@@ -15,8 +15,7 @@ exports.protect = async (req, res, next) => {
   }else{
     return next(new AppError("Please provide authorization headers", 401));
   }
-
-
+  
   if (!token) {
     return next(new AppError("Not authorized to access this route", 401));
   }
