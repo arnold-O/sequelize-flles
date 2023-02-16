@@ -27,9 +27,7 @@ module.exports = (sequelize, DataTypes) => {
     {
       type:DataTypes.STRING,
       validate:{
-        min: 7,
-        
-       
+        min: 7, 
       }
     } ,
     user_plan: DataTypes.ENUM('planA', 'planB'),
