@@ -22,6 +22,7 @@ module.exports = {
             tableName: "Users",
           },
           key: "id",
+          field: 'userId'
         },
         allowNull: false,
       }    

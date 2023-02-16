@@ -7,38 +7,37 @@ const Comment = require("../models/").Comment;
 
 const router = express.Router();
 
-router.post("/post", protect, catchAsyncErrors( async (req, res, next) => {
-    console.log(req.user)
+router.post(
+  "/post",
+  protect,
+  catchAsyncErrors(async (req, res, next) => {
+    const { name, content } = req.body;
 
-    const {name, content} = req.body
-
-   const  newPost = await Post.create({
-        name,
-        content,
-        userId:req.user.id
-
-    })
-    // const doc = {
-    //     name : newPost.name,
-    //     content : newPost.content
-    // }
-  res.status(200).json({
-    status: "sucess",
-    newPost
-  });
-}));
+    const newPost = await Post.create({
+      name,
+      content,
+      userId: req.user.id,
+    });
+    res.status(200).json({
+      status: "sucess",
+      newPost,
+    });
+  })
+);
 
 
 router.get('/post', protect, catchAsyncErrors( async(req, res, next)=>{
 
-    const allPost = await Post.findAll({ 
-        include: [{
-            model:User,
-            model:Comment,
-
-          
-         
-        }]
+    const allPost = await Post.findAll({
+      include: [
+        { model: User },
+        {
+          model: Comment,
+          include: {
+            model: User,
+          },
+        },
+      ],
     });
 
     const doc = allPost
