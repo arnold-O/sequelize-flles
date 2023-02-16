@@ -15,8 +15,23 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   User.init({
-    name: DataTypes.STRING,
-    phone_number: DataTypes.STRING,
+    name:{
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notNull: {
+          msg: 'Please enter your name'
+        }
+      }},
+    phone_number:
+    {
+      type:DataTypes.STRING,
+      validate:{
+        min: 7,
+        
+       
+      }
+    } ,
     user_plan: DataTypes.ENUM('planA', 'planB'),
   }, {
     sequelize,

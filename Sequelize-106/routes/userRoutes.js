@@ -10,12 +10,12 @@ const { protect } = require("../utils/jwtValidate");
 
 const router = express.Router();
 
-router.post("/user", async(req, res) => {
+router.post("/user", catchAsyncErrors(  async(req, res, next) => {
     const {name, phone_number}  = req.body
 
-    if(!name, !phone_number){
-        next(new AppError('Please provide Credentials', 404))
-    }
+    // if(!name || !phone_number){
+    //     next(new AppError('Please provide Credentials', 404))
+    // }
    
     const newUser = await User.create({
         name,
@@ -26,7 +26,7 @@ router.post("/user", async(req, res) => {
     status: "sucess",
     data:newUser
   });
-});
+}));
 
 router.post(
     "/user/login",
@@ -82,7 +82,7 @@ router.get("/user", async(req, res) => {
  
 });
 router.get("/plansb-offers", protect, authorize('planB'), async(req, res) => {
-  
+
         return res.status(200).json({
             status: "sucess",
             message:"!!!"
