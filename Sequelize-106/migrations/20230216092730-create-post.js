@@ -15,7 +15,16 @@ module.exports = {
       content: {
         type: Sequelize.TEXT
       },
-     
+      userId: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: {
+            tableName: "Users",
+          },
+          key: "id",
+        },
+        allowNull: false,
+      }    
     });
   },
   async down(queryInterface, Sequelize) {
