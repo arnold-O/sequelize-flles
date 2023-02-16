@@ -17,6 +17,7 @@ module.exports = (sequelize, DataTypes) => {
     name: DataTypes.STRING,
     content: DataTypes.TEXT
   }, {
+    timestamps:false,
     sequelize,
     modelName: 'Post',
   });

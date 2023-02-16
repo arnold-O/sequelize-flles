@@ -13,16 +13,16 @@ module.exports = {
         type: Sequelize.TEXT
       },
       postId: {
-        type: Sequelize.INTEGER
-      },
-      createdAt: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: {
+            tableName: "Posts",
+          },
+          key: "id",
+        },
         allowNull: false,
-        type: Sequelize.DATE
       },
-      updatedAt: {
-        allowNull: false,
-        type: Sequelize.DATE
-      }
+    
     });
   },
   async down(queryInterface, Sequelize) {
