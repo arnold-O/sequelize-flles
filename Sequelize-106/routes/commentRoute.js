@@ -5,14 +5,9 @@ const Comment = require("../models/").Comment;
 
 const router = express.Router();
 
-
-
-
-
-
 router.post("/comment/:postId", protect, catchAsyncErrors(async(req, res) => {
   
-  
+
             const {comment_text} = req.body
             const {postId} = req.params
 

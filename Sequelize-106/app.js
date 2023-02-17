@@ -6,6 +6,7 @@ const UserRouter = require("./routes/userRoutes");
 const EmailRouter = require("./routes/emailRoutes");
 const PostRouter = require("./routes/postRoutes");
 const CommentRouter = require("./routes/commentRoute");
+const CategoryRouter = require("./routes/categoryRoute");
 const AppError = require("./utils/appError");
 
 const app = express();
@@ -19,6 +20,7 @@ app.use("/api/v1", UserRouter);
 app.use("/api/v1", EmailRouter);
 app.use("/api/v1", PostRouter);
 app.use("/api/v1", CommentRouter);
+app.use("/api/v1", CategoryRouter);
 
 
 

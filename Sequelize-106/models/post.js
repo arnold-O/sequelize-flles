@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       Post.hasMany(models.Comment, {foreignKey:'postId'}),
       Post.belongsTo(models.User, {foreignKey:'userId'}),
-      Post.belongsTo(models.Category, {foreignKey:"categoryId"})
+      Post.belongsTo(models.Category, {foreignKey:'categoryId'})
     }
   }
   Post.init({
