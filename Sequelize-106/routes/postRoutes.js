@@ -1,5 +1,6 @@
 const express = require("express");
 const { Op } = require("sequelize");
+const AppError = require("../utils/appError");
 const Category = require("../models/").Category;
 const catchAsyncErrors = require("../utils/catchAsyncErrors");
 const { protect } = require("../utils/jwtValidate");
@@ -40,8 +41,7 @@ router.get(
   "/post",
   protect,
   catchAsyncErrors(async (req, res, next) => {
-
-    console.log('post req.query...', req.query)
+    console.log("post req.query...", req.query);
     const allPost = await Post.findAll({
       include: [
         { model: User },
@@ -65,29 +65,25 @@ router.get(
 );
 router.get(
   "/postfind",
- 
+
   catchAsyncErrors(async (req, res, next) => {
-    console.log('queryyyy---',req.query)
-
-        let allPost;
-    if(req.query.name){
-
+    let allPost;
+    if (req.query.name) {
       allPost = await Post.findAll({
-        where:{
-         name:{
-          [Op.like]:`%${req.query.name}%`
-         }
-        }
+        where: {
+          name: {
+            [Op.like]: `%${req.query.name}%`,
+          },
+        },
       });
-    }else{
+    } else {
       allPost = await Post.findAll({
-        where:{
-         content:{
-          [Op.like]:[`%${req.query.content}%`]
-         }
-        }
+        where: {
+          content: {
+            [Op.like]: [`%${req.query.content}%`],
+          },
+        },
       });
-
     }
 
     const doc = allPost;
@@ -121,6 +117,53 @@ router.get(
     res.status(200).json({
       status: "sucess",
       allPost,
+    });
+  })
+);
+router.put(
+  "/post/:postId",
+  protect,
+  catchAsyncErrors(async (req, res, next) => {
+    const { name, content } = req.body;
+    const { postId } = req.params;
+
+    const postCheck = await Post.findOne({
+      where: {
+        id: {
+          [Op.eq]: postId,
+        },
+        userId: {
+          [Op.eq]: req.user.id,
+        },
+      },
+    });
+
+    console.log("logged user ----", postCheck);
+
+    if (!postCheck) {
+      return next(
+        new AppError(
+          "Can't update another user's Post or Post not available",
+          404
+        )
+      );
+    }
+
+    const updateValues = await Post.update(
+      {
+        name: req.body.name,
+        content: req.body.content,
+      },
+      {
+        where: {
+          id: postId,
+        },
+      }
+    );
+
+    res.status(200).json({
+      status: "sucess",
+      updateValues,
     });
   })
 );

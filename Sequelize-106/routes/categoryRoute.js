@@ -28,4 +28,15 @@ router.post("/cate", protect, authorize('planB'),catchAsyncErrors( async  (req, 
   });
 }));
 
+router.get("/cate", protect, authorize('planB'),catchAsyncErrors( async  (req, res, next) => {
+
+    const allCategory = await Category.findAll()
+
+
+  res.status(200).json({
+    status: "sucess",
+    allCategory
+  });
+}));
+
 module.exports = router;
