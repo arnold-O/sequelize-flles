@@ -11,7 +11,8 @@ const router = express.Router();
 
 
 router.post("/comment/:postId", protect, catchAsyncErrors(async(req, res) => {
-    console.log(req.user.id)
+  
+  
             const {comment_text} = req.body
             const {postId} = req.params
 

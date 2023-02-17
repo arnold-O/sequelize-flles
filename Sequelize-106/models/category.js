@@ -7,12 +7,12 @@ module.exports = (sequelize, DataTypes) => {
  
     static associate(models) {
       // define association here
+      Category.hasMany(models.Post, {foreignKey:"categoryId"})
     }
   }
   Category.init({
     name: DataTypes.STRING,
-    categoryImage: DataTypes.STRING,
-    status: DataTypes.INTEGER
+    status: DataTypes.DataTypes.ENUM('Trending', 'Popular', 'New', 'Top Rated'),
   }, {
     sequelize,
     modelName: 'Category',

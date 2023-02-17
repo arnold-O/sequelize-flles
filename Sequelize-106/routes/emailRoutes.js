@@ -19,4 +19,4 @@ router.post("/email", protect, async (req, res) => {
   });
 });
 
-module.exports = router;
+module.exports = router;  1

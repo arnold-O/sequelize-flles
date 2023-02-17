@@ -25,7 +25,18 @@ module.exports = {
           field: 'userId'
         },
         allowNull: false,
-      }    
+      },
+      categoryId: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: {
+            tableName: "Category",
+          },
+          key: "id",
+          field: 'categoryId'
+        },
+        allowNull: false,
+      }  
     });
   },
   async down(queryInterface, Sequelize) {

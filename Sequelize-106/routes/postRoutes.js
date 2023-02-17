@@ -8,14 +8,16 @@ const Comment = require("../models/").Comment;
 const router = express.Router();
 
 router.post(
-  "/post",
+  "/post/:categoryId",
   protect,
   catchAsyncErrors(async (req, res, next) => {
-    const { name, content } = req.body;
+    const { name, content,  } = req.body;
+    const { categoryId  } = req.params;
 
     const newPost = await Post.create({
       name,
       content,
+      categoryId,
       userId: req.user.id,
     });
     res.status(200).json({

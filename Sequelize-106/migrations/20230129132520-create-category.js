@@ -13,15 +13,11 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull:false
       },
-      categoryImage: {
-        type: Sequelize.STRING
-      },
       status: {
-        type: Sequelize.INTEGER,
-        defaultValue:1
-      },
-      
-     
+        type: Sequelize.ENUM('Trending', 'Popular', 'New', 'Top Rated'),
+        defaultValue:'New'
+      }
+        
     });
   },
   async down(queryInterface, Sequelize) {
