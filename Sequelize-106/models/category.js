@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
   }
   Category.init({
     name: DataTypes.STRING,
-    status: DataTypes.DataTypes.ENUM('Trending', 'Popular', 'New', 'Top Rated'),
+    status: DataTypes.ENUM('Trending', 'Popular', 'New', 'Top Rated'),
   }, {
     sequelize,
     modelName: 'Category',
