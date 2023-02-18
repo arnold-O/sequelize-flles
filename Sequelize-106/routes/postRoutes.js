@@ -41,32 +41,7 @@ router.get(
   "/post",
   protect,
   catchAsyncErrors(async (req, res, next) => {
-    console.log("post req.query...", req.query);
-    const allPost = await Post.findAll({
-      include: [
-        { model: User },
-        {
-          model: Comment,
-          include: {
-            model: User,
-          },
-        },
-        { model: Category },
-      ],
-    });
-
-    const doc = allPost;
-
-    res.status(200).json({
-      status: "sucess",
-      allPost,
-    });
-  })
-);
-router.get(
-  "/postfind",
-
-  catchAsyncErrors(async (req, res, next) => {
+    console.log(req.query)
     let allPost;
     if (req.query.name) {
       allPost = await Post.findAll({
@@ -75,8 +50,10 @@ router.get(
             [Op.like]: `%${req.query.name}%`,
           },
         },
+      
+
       });
-    } else {
+    } else if (req.query.content) {
       allPost = await Post.findAll({
         where: {
           content: {
@@ -84,9 +61,22 @@ router.get(
           },
         },
       });
+    } else {
+      allPost = await Post.findAll({
+        include: [
+          { model: User },
+          {
+            model: Comment,
+            include: {
+              model: User,
+            },
+          },
+          { model: Category },
+        ],
+        offset: req.query.count ? parseInt(`${req.query.count}`): 0,
+        limit: req.query.limit ? +parseInt(`${req.query.limit}`): 0
+      });
     }
-
-    const doc = allPost;
 
     res.status(200).json({
       status: "sucess",
@@ -138,8 +128,6 @@ router.put(
       },
     });
 
-    console.log("logged user ----", postCheck);
-
     if (!postCheck) {
       return next(
         new AppError(
@@ -151,19 +139,21 @@ router.put(
 
     const updateValues = await Post.update(
       {
-        name: req.body.name,
-        content: req.body.content,
+        name,
+        content,
       },
       {
         where: {
           id: postId,
         },
+        
       }
     );
+    console.log(updateValues[0])
 
     res.status(200).json({
       status: "sucess",
-      updateValues,
+       Values: await Post.findByPk(postId)
     });
   })
 );
