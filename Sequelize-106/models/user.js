@@ -36,7 +36,12 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'User',
-    timestamps:false
+    timestamps:false,
+    defaultScope: {
+      attributes: {
+        exclude: ['user_plan', 'phone_number', ]
+      }
+    }
   });
   return User;
 };

@@ -21,7 +21,7 @@ module.exports = (sequelize, DataTypes) => {
       validate: {
         isIn: { 
           args: [['Trending', 'Popular', 'New', 'Top Rated']],
-          msg: "Wrong status, please select from one of the pre-defined"
+          msg: "Wrong status, please select from one of the pre-defined Values"
         }
       }
     }

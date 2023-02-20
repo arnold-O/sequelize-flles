@@ -73,8 +73,8 @@ router.get(
           },
           { model: Category },
         ],
-        offset: req.query.count ? parseInt(`${req.query.count}`): 0,
-        limit: req.query.limit ? +parseInt(`${req.query.limit}`): 0
+        offset: req.query.count ? +(`${req.query.count}`): 0,
+        limit: req.query.limit ? +(`${req.query.limit}`): 10
       });
     }
 

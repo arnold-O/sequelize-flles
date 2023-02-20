@@ -16,15 +16,16 @@ router.post("/user", catchAsyncErrors(  async(req, res, next) => {
     // if(!name || !phone_number){
     //     next(new AppError('Please provide Credentials', 404))
     // }
-   
-    const newUser = await User.create({
-        name,
-        phone_number
-       
+  
+   const newUser = await User.create({
+     name,
+     phone_number
+     
     })
- return res.status(200).json({
-    status: "sucess",
-    data:newUser
+    return res.status(200).json({
+      status: "sucess",
+      data: await User.findByPk(newUser.id),
+     
   });
 }));
 
