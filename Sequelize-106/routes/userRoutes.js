@@ -41,6 +41,7 @@ router.post(
         },
       },
     });
+    console.log(  "heyyy user", user)
 
     if (!user) {
       return next(new AppError("Invalid credentials", 404));

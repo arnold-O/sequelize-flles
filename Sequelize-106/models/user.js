@@ -90,7 +90,7 @@ module.exports = (sequelize, DataTypes) => {
       timestamps: false,
       defaultScope: {
         attributes: {
-          exclude: ["user_plan"],
+          exclude: [""],
         },
       },
     }
