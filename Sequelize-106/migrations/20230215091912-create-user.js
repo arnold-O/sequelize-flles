@@ -13,8 +13,20 @@ module.exports = {
         type: Sequelize.STRING,
 
       },
+      password:{
+        type: Sequelize.STRING,
+
+      },
       phone_number: {
         type: Sequelize.STRING,
+      },
+      resetPasswordToken: {
+        type: Sequelize.STRING,
+        defaultValue: null,
+      },
+      resetPasswordExpire: {
+        type: Sequelize.DATE,
+        defaultValue: null,
       },
       user_plan: {
         type: Sequelize.ENUM("planA", "planB"),
