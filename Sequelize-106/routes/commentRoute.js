@@ -2,6 +2,7 @@ const express = require("express");
 const AppError = require("../utils/appError");
 const catchAsyncErrors = require("../utils/catchAsyncErrors");
 const { protect } = require("../utils/jwtValidate");
+const { Op } = require("sequelize");
 const Comment = require("../models/").Comment;
 const Post = require("../models/").Post;
 
@@ -26,6 +27,8 @@ const posIdCheck = await Post.findByPk(postId);
       postId,
       userId: req.user.id,
     });
+
+    
 
     res.status(200).json({
       status: "sucess",

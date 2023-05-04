@@ -110,6 +110,7 @@ router.get(
     });
   })
 );
+
 router.put(
   "/post/:postId",
   protect,

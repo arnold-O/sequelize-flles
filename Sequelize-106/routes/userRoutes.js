@@ -55,7 +55,7 @@ router.post(
       return next(new AppError("Invalid credentials", 404));
     }
 
-    //create a token
+    //create a tokene`
 
     const token = jwtToken(user);
 
